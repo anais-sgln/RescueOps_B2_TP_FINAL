@@ -14,8 +14,8 @@ Commit de base : 5e99359aa7cb8ad6a79a67a02373300e8b5a6873
 | A-03 | RO-03 | `dispatch.js` / `deployDrone` | Drone `busy` → accepté ; mission déjà `en_route` → redéployée. Attendu : `Error` | Double affectation drone/mission | P0 : cœur du dispatch faussé | T14, T15, T16 (`dispatch.test.js`), commit `fc20916` |
 | A-04 | RO-06 | `mission.js` / `advanceMission` | `planned → en_route`, `en_route → closed`, `on_site → en_route`, `canceled → en_route` → acceptés. Attendu : `Error` | Mission lancée sans drone, étapes sautées | P1 : cycle de vie non respecté | T17, T18, T19, T21 (`mission.test.js`), commit `97db3c0` |
 | A-05 | RO-07 | `mission.js` / `cancelMission` | Mission `en_route` → `canceled`. Attendu : `Error` | Mission annulée en vol, drone resté `busy` | P1 : état incohérent | T20, T21 (`mission.test.js`), commit `97db3c0` |
-| A-06 | RO-08 | `public.js` / `getPublicStatus` | Renvoie aussi `contactEmail`, `gps`, `priority` ; `history` non copiée. Attendu : `id`, `status`, copie de `history` | Fuite de données personnelles | P0 : donnée personnelle publique | T22, T23 (`public.test.js`) |
-| A-07 | RO-09 | `MissionCard.php` / `publicCard` | Renvoie aussi `contactEmail`, `gps`. Attendu : `id`, `statusLabel` | Fuite de données personnelles | P0 : donnée personnelle publique | P04, P05, P06 (`MissionCard.test.php`) |
+| A-06 | RO-08 | `public.js` / `getPublicStatus` | Renvoie aussi `contactEmail`, `gps`, `priority` ; `history` non copiée. Attendu : `id`, `status`, copie de `history` | Fuite de données personnelles | P0 : donnée personnelle publique | T22, T23 (`public.test.js`), commit `1689ae0` |
+| A-07 | RO-09 | `MissionCard.php` / `publicCard` | Renvoie aussi `contactEmail`, `gps`. Attendu : `id`, `statusLabel` | Fuite de données personnelles | P0 : donnée personnelle publique | P04, P05, P06 (`MissionCard.test.php`), commit `1689ae0` |
 
 ## D-01 — Dette technique reportable
 
@@ -38,8 +38,15 @@ Node.js v24.19.0, PHP 8.3.33.
 
 ## Contrôles APRÈS correction
 
-À compléter.
+Même environnement, après le commit `1689ae0` et le test de revue T24.
+
+- `npm test` : 24/24 verts (8 tests d'origine + 16 nouveaux).
+- `php tests/MissionCard.test.php` : P01 à P06 verts.
+- `php -l src/php/MissionCard.php` : aucune erreur.
+- `npm run demo` : énergie 31, batterie 39 ; drone à 35 pts « REFUSÉ » ; vue publique limitée à `id`, `status`, `history`.
+
+**Limite :** D-01 non corrigée (statut inconnu en PHP → avertissement et libellé `null`, constaté).
 
 ## Conclusion d'audit
 
-À compléter.
+Les 7 défauts sont corrigés et prouvés par des tests, sans changer les signatures ni la formule d'énergie. Les scénarios d'origine restent verts. Seule D-01 reste ouverte, documentée et différée (P2).

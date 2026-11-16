@@ -27,6 +27,10 @@ test('T12 - A-02 réserve insuffisante refusée (35 et 50 points)', () => {
   assert.throws(() => deployDrone(drone(50), mission()), RangeError);
 });
 
+test('T24 - R-01 batterie NaN refusée (RangeError)', () => {
+  assert.throws(() => deployDrone(drone(NaN), mission()), RangeError);
+});
+
 test('T13 - A-02 drone à 51 points accepté, réserve restante 20', () => {
   const result = deployDrone(drone(51), mission());
   assert.equal(result.drone.batteryPoints, 20);
