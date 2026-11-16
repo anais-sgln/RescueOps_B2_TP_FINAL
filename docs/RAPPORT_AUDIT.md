@@ -9,7 +9,7 @@ Commit de base : 5e99359aa7cb8ad6a79a67a02373300e8b5a6873
 
 | ID | Règle RO | Fichier / fonction | Entrée, obtenu S0, attendu | Risque concret | Priorité P0/P1/P2 | Preuve du correctif (test / commit) |
 |---|---|---|---|---|---|---|
-| A-01 | RO-02 | `energy.js` / `estimateEnergy` | `(-1, 2)` → `7` ; `(5, 6)` → `43` ; `(NaN, 2)` → `NaN`. Attendu : `RangeError` | Coût faux ou `NaN` qui fausse le contrôle de batterie | P1 : contrat d'entrée, base de RO-04 | À compléter |
+| A-01 | RO-02 | `energy.js` / `estimateEnergy` | `(-1, 2)` → `7` ; `(5, 6)` → `43` ; `(NaN, 2)` → `NaN`. Attendu : `RangeError` | Coût faux ou `NaN` qui fausse le contrôle de batterie | P1 : contrat d'entrée, base de RO-04 | T09, T10, T11 (`energy.test.js`) |
 | A-02 | RO-04 | `dispatch.js` / `deployDrone` | Drone 35 pts, coût 31 → accepté, reste `4`. Attendu : `RangeError` (minimum 51) | Départ sans réserve de 20 pts | P0 : simulation non sûre | À compléter |
 | A-03 | RO-03 | `dispatch.js` / `deployDrone` | Drone `busy` → accepté ; mission déjà `en_route` → redéployée. Attendu : `Error` | Double affectation drone/mission | P0 : cœur du dispatch faussé | À compléter |
 | A-04 | RO-06 | `mission.js` / `advanceMission` | `planned → en_route`, `en_route → closed`, `on_site → en_route`, `canceled → en_route` → acceptés. Attendu : `Error` | Mission lancée sans drone, étapes sautées | P1 : cycle de vie non respecté | À compléter |
