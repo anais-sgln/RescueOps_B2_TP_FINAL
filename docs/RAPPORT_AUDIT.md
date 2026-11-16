@@ -10,10 +10,10 @@ Commit de base : 5e99359aa7cb8ad6a79a67a02373300e8b5a6873
 | ID | Règle RO | Fichier / fonction | Entrée, obtenu S0, attendu | Risque concret | Priorité P0/P1/P2 | Preuve du correctif (test / commit) |
 |---|---|---|---|---|---|---|
 | A-01 | RO-02 | `energy.js` / `estimateEnergy` | `(-1, 2)` → `7` ; `(5, 6)` → `43` ; `(NaN, 2)` → `NaN`. Attendu : `RangeError` | Coût faux ou `NaN` qui fausse le contrôle de batterie | P1 : contrat d'entrée, base de RO-04 | T09, T10, T11 (`energy.test.js`), commit `4f9b0eb` |
-| A-02 | RO-04 | `dispatch.js` / `deployDrone` | Drone 35 pts, coût 31 → accepté, reste `4`. Attendu : `RangeError` (minimum 51) | Départ sans réserve de 20 pts | P0 : simulation non sûre | T12, T13, T16 (`dispatch.test.js`) |
-| A-03 | RO-03 | `dispatch.js` / `deployDrone` | Drone `busy` → accepté ; mission déjà `en_route` → redéployée. Attendu : `Error` | Double affectation drone/mission | P0 : cœur du dispatch faussé | T14, T15, T16 (`dispatch.test.js`) |
-| A-04 | RO-06 | `mission.js` / `advanceMission` | `planned → en_route`, `en_route → closed`, `on_site → en_route`, `canceled → en_route` → acceptés. Attendu : `Error` | Mission lancée sans drone, étapes sautées | P1 : cycle de vie non respecté | À compléter |
-| A-05 | RO-07 | `mission.js` / `cancelMission` | Mission `en_route` → `canceled`. Attendu : `Error` | Mission annulée en vol, drone resté `busy` | P1 : état incohérent | À compléter |
+| A-02 | RO-04 | `dispatch.js` / `deployDrone` | Drone 35 pts, coût 31 → accepté, reste `4`. Attendu : `RangeError` (minimum 51) | Départ sans réserve de 20 pts | P0 : simulation non sûre | T12, T13, T16 (`dispatch.test.js`), commit `fc20916` |
+| A-03 | RO-03 | `dispatch.js` / `deployDrone` | Drone `busy` → accepté ; mission déjà `en_route` → redéployée. Attendu : `Error` | Double affectation drone/mission | P0 : cœur du dispatch faussé | T14, T15, T16 (`dispatch.test.js`), commit `fc20916` |
+| A-04 | RO-06 | `mission.js` / `advanceMission` | `planned → en_route`, `en_route → closed`, `on_site → en_route`, `canceled → en_route` → acceptés. Attendu : `Error` | Mission lancée sans drone, étapes sautées | P1 : cycle de vie non respecté | T17, T18, T19, T21 (`mission.test.js`) |
+| A-05 | RO-07 | `mission.js` / `cancelMission` | Mission `en_route` → `canceled`. Attendu : `Error` | Mission annulée en vol, drone resté `busy` | P1 : état incohérent | T20, T21 (`mission.test.js`) |
 | A-06 | RO-08 | `public.js` / `getPublicStatus` | Renvoie aussi `contactEmail`, `gps`, `priority` ; `history` non copiée. Attendu : `id`, `status`, copie de `history` | Fuite de données personnelles | P0 : donnée personnelle publique | À compléter |
 | A-07 | RO-09 | `MissionCard.php` / `publicCard` | Renvoie aussi `contactEmail`, `gps`. Attendu : `id`, `statusLabel` | Fuite de données personnelles | P0 : donnée personnelle publique | À compléter |
 
